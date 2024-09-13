@@ -1,4 +1,3 @@
-type: framework
 content:
   - Printing
   - String Manipulation
@@ -6,4 +5,3 @@ content:
   - Variables
   - Variable Naming
   - Band Name Generator Project
-current_task: 5
