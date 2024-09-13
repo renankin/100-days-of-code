@@ -9,7 +9,7 @@ print('''
 |                   |    __.--" , ; `"=._o." ,-"""-._ ".   |
 |___________________|_._"  ,. .` ` `` ,  `"-._"-._   ". '__|___________________
           |           |o`"=._` , "` `; .". ,  "-._"-._; ;              |
- _________|___________| ;`-.o`"=._; ." ` '`."\ ` . "-._ /_______________|_______
+ _________|___________| ;`-.o`"=._; ." ` '`." ` . "-._ /_______________|______
 |                   | |o ;    `"-.o`"=._``  '` " ,__.--o;   |
 |___________________|_| ;     (#) `-.o `"=.`_.--"_o.-; ;___|___________________
 ____/______/______/___|o;._    "      `".o|o_.--"    ;o;____/______/______/____
@@ -22,3 +22,30 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
 ''')
 print("Welcome to Treasure Island.")
 print("Your mission is to find the treasure.")
+
+first_choice = input('You are at a crossroads. '
+                     'Where do you want to go? \n'
+                     'Type "left" or "right" \n').lower()
+
+if first_choice == "left":
+    second_choice = input(' You\'ve come to a lake. '
+                          'There is an island in the middle of the lake. \n'
+                          'Type "wait" to wait for a boat. '
+                          'Type "swim" to swim across. \n').lower()
+    if second_choice == "wait":
+        third_choice = input('You arrive at the island unharmed. '
+                             'There is a house with 3 doors. \n'
+                             'One "red", one "yellow" and one "blue". '
+                             'Which colour do you choose? \n').lower()
+        if third_choice == "red":
+            print("Burned by fire. Game over.")
+        elif third_choice == "blue":
+            print("Eaten by beasts. Game over.")
+        elif third_choice == "yellow":
+            print("Found the treasure. You win.")
+        else:
+            print("Wrong choice. Game over.")
+    else:
+        print("Attacked by trout. Game over.")
+else:
+    print("You got hit by a giant.")
