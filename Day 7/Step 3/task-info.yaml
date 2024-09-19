@@ -4,11 +4,11 @@ files:
     visible: true
     learner_created: false
   - name: __init__.py
-    visible: false
+    visible: true
     learner_created: false
   - name: solution.py
     visible: true
     learner_created: false
-status: Unchecked
+status: Solved
 record: -1
 post_submission_on_open: true
