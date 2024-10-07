@@ -1,93 +1,128 @@
 import random
 import art
 
-cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
-
-# TODO-1: Create a way of pulling up cards for the user and computer in
+# 1: Create a way of pulling up cards for the user and computer in
 #  sequence while removing cards from the deck and storing the cards in a list.
 
-# TODO-2: Asks the user if he wants to play again and iterate over the loop.
+# 2: Asks the user if he wants to play again and iterate over the loop.
 
-# TODO-3: check if the score is above 21 and if so, let the user know he lost.
+# 3: check if the score is above 21 and if so, let the user know he lost.
 
-# TODO-4: Calculate final scores if user don't want to play anymore.
+# 4: Calculate final scores if user don't want to play anymore.
 
-# TODO-5: Asks if the user wants to play a game of Blackjack initially.
+# 5: Asks if the user wants to play a game of Blackjack initially.
 
-# TODO-6: Implement functions to simplify code.
+# 6: Implement functions to simplify code.
 
-play_blackjack = True
+# 7: Implement condition for using 11 if it is bust.
 
-while play_blackjack:
-    wants_to_play = input("Do you want to play a game of Blackjack: "
-                          "Type 'y' or 'n': ")
 
-    if wants_to_play == 'n':
-        play_blackjack = False
+def draw_card(player_cards, n_cards):
+
+    cards_available = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+
+    for card in range(n_cards):
+        card = random.choice(cards_available)
+        cards_available.remove(card)
+        player_cards.append(card)
+
+    # substitute card if score above 21 and there is an ace
+    player_score = sum(player_cards)
+    if player_score > 21:
+        for card in player_cards:
+            if card == 11:
+                player_cards.remove(card)
+                player_cards.append(1)
+
+    return player_cards
+
+
+def find_winner(user_cards, computer_cards):
+
+    user_score = sum(user_cards)
+    computer_score = sum(computer_cards)
+
+    # Blackjack
+    if user_score == 21:
+        if computer_score == 21:
+            print("Both of you have a blackjack. You draw \U0001F643")
+            return
+        else:
+            print("You have a blackjack. You win \U0001F601")
+            return
+
+    # Computer bust
+    if computer_score > 21:
+        print("Computer bust. You win \U0001F601")
+        return
+
+    # Both have a score lower than 21
+    if user_score > computer_score:
+        print("You have a higher score. You win \U0001F601")
+    elif user_score == computer_score:
+        print("You have the same score. You draw \U0001F643")
+    else:
+        print("You have a lower score. You lose \U0001F62D")
+
+
+def blackjack():
 
     print(art.logo)
 
+    # Draw 2 cards for pc and user
     user_hand = []
+    draw_card(user_hand, 2)
     computer_hand = []
-    turn = 0
+    draw_card(computer_hand, 2)
+
+    # Display score
+    print(f"Your cards: {user_hand}, current score: {sum(user_hand)}\n"
+          f"Computer's first card: {computer_hand[0]}")
+
+    # Ask user if he wants new card
     keep_playing = True
 
     while keep_playing:
-        # pull a card for user
-        user_card = random.choice(cards)
-        cards.remove(user_card)
-        user_hand.append(user_card)
+        wants_new_card = input("Type 'y' to get another card,"
+                               "type 'n' to pass: ")
 
-        # pull a card for computer
-        computer_card = random.choice(cards)
-        cards.remove(computer_card)
-        computer_hand.append(computer_card)
+        if wants_new_card == "y":
+            draw_card(user_hand, 1)
 
-        turn += 1
-
-        if turn > 1:
-            # calculate score
-            user_score = sum(user_hand)
-            computer_score = sum(computer_hand)
-
-            print(f"Your cards: {user_hand}, current score: {user_score}\n"
+            print(f"Your cards: {user_hand}, current score: {sum(user_hand)}\n"
                   f"Computer's first card: {computer_hand[0]}")
 
-            # condition for going above 21
-            if user_score > 21:
-                print(f"Your final hand: {user_hand}, "
-                      f"final score: {user_score}\n"
-                      f"Computer's final hand: {computer_hand}, "
-                      f"final score: {computer_score}\n"
-                      "You went over. You lose \U0001F62D")
-
+            if sum(user_hand) > 21:
+                print("You bust. You lose \U0001F62D")
                 keep_playing = False
+                play_blackjack()
 
-            question = input("Type 'y' to get another card, type 'n' to pass: ")
+        else:
+            # Check if computer score is above 17
+            while sum(computer_hand) < 17:
+                draw_card(computer_hand, 1)
 
-            # condition for finding who wins
-            if question == 'n':
+            keep_playing = False
 
-                # complete computer's hand
-                while computer_score < 21:
-                    computer_card = random.choice(cards)
-                    cards.remove(computer_card)
-                    computer_hand.append(computer_card)
-                    computer_score = sum(computer_hand)
+    # Display final hand
+    print(f"Your final hand: {user_hand},"
+          f"final score: {sum(user_hand)}\n"
+          f"Computer's final hand: {computer_hand}, "
+          f"final score: {sum(computer_hand)}\n")
 
-                print(f"Your final hand: {user_hand}, "
-                      f"final score: {user_score}\n"
-                      f"Computer's final hand: {computer_hand}, "
-                      f"final score: {computer_score}\n")
+    # Check who wins
+    find_winner(user_cards=user_hand, computer_cards=computer_hand)
 
-                if computer_score > user_score:
-                    if computer_score > 21:
-                        print("You win \U0001F601")
-                    else:
-                        print("You lose \U0001F624")
-                elif computer_score == user_score:
-                    print("You draw \U0001F643")
-                else:
-                    print("You win \U0001F601")
+    play_blackjack()
 
-                keep_playing = False
+
+def play_blackjack():
+
+    wants_to_play = input("Do you want to play a game of Blackjack: "
+                          "Type 'y' or 'n': ")
+
+    if wants_to_play == "y":
+        blackjack()
+
+
+play_blackjack()
