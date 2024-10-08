@@ -54,23 +54,12 @@ def check_for_blackjack(user_cards, computer_cards):
         play_blackjack()
 
 
-def check_for_bust(user_cards, computer_cards):
-
-    user_score = sum(user_cards)
-    computer_score = sum(computer_cards)
-
-    if user_score > 21:
-        print("You bust. You lose \U0001F62D")
-    elif computer_score > 21:
-        print("Computer bust. You win \U0001F601")
-
-
 def find_winner(user_cards, computer_cards):
 
     user_score = sum(user_cards)
     computer_score = sum(computer_cards)
 
-    if user_score < 21 and computer_score < 21:
+    if user_score <= 21 and computer_score <= 21:
         if user_score > computer_score:
             print("You have a higher score. You win \U0001F601")
         elif user_score == computer_score:
@@ -78,7 +67,10 @@ def find_winner(user_cards, computer_cards):
         else:
             print("You have a lower score. You lose \U0001F62D")
     else:
-        check_for_bust(user_cards, computer_cards)
+        if user_score > 21:
+            print("You bust. You lose \U0001F62D")
+        else:
+            print("Computer bust. You win \U0001F601")
 
 
 def display_results(user_cards, computer_cards):
@@ -95,11 +87,11 @@ def blackjack():
 
     print(20 * "\n" + art.logo)
 
-    # Draw 2 cards for pc and user
     user_hand = []
-    draw_card(user_hand, 2, cards)
     computer_hand = []
-    draw_card(computer_hand, 2, cards)
+    # Draw 2 cards for pc and user
+    draw_card(player_cards=user_hand, n_cards=2, cards_available=cards)
+    draw_card(player_cards=computer_hand, n_cards=2, cards_available=cards)
 
     # Display score
     print(f"Your cards: {user_hand}, current score: {sum(user_hand)}\n"
