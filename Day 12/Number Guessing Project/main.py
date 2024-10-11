@@ -1,7 +1,4 @@
 from random import randint
-
-from PIL.ImImagePlugin import number
-
 import art
 
 # global variables
