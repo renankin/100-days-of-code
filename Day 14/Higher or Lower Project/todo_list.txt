@@ -1,0 +1,24 @@
+Higher or Lower Game:
+* Import game data and random module.
+* From game data, get a random dictionary entry and assign to variable A. -> this can be a function
+* Use a print statement to return the information from dictionary.
+* Save number of followers in another variable.
+* Do the above 3 steps, for a second variable B.
+* Compare the number of followers between two variables, and check which one is bigger. -> this can be a function
+* Ask the user to make a guess and compare the user's answer to the final answer.
+* if user's right, add score, overwrite first variable with the second one, and keep playing.
+* If user's wrong, display final score and end game.
+
+from lecturer:
+# Display art.
+# Generate a random account from the game data.
+# Form the account data into printable format.
+# Ask use for a guess.
+# Check if user is correct:
+## Get follower count of each account
+## Use if statement to check if user is correct.
+# Give user feedback on their guess.
+# Score keeping.
+# Make the game repeatable.
+# Making account at position B become the next account at position B.
+

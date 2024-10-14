@@ -9,13 +9,13 @@ files:
   - name: maths.py
     visible: true
     learner_created: false
+  - name: exercise_14.py
+    visible: true
+    learner_created: true
   - name: exercise_12.py
     visible: true
     learner_created: true
   - name: exercise_13.py
-    visible: true
-    learner_created: true
-  - name: exercise_14.py
     visible: true
     learner_created: true
 status: Solved
