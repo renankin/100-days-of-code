@@ -10,12 +10,13 @@ class Player(Turtle):
     def __init__(self):
         super().__init__()
         self.shape("turtle")
-        self.color("black")
         self.penup()
         self.setheading(90)
-        self.goto(STARTING_POSITION)
+        self.finish_line = FINISH_LINE_Y
+        self.go_to_start()
 
     def move(self):
-        self.forward(20)
+        self.forward(MOVE_DISTANCE)
 
-
+    def go_to_start(self):
+        self.goto(STARTING_POSITION)
