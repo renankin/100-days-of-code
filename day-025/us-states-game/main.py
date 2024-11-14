@@ -19,11 +19,9 @@ while len(guessed_states) < 50:
 
     if answer_state == "Exit":
         # Save states which have not been guessed into csv file
-        remaining_states = []
-        for state in all_states:
-            if state not in guessed_states:
-                remaining_states.append(state)
-        df = pd.DataFrame(remaining_states)
+        missing_states = [state for state in all_states if state not in
+                          guessed_states]
+        df = pd.DataFrame(missing_states)
         df.to_csv("states_to_learn.csv")
         break
 
