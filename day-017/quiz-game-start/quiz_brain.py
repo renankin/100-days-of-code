@@ -1,8 +1,8 @@
-# TODO: asking the questions
+# To-do: Asking the questions
 
-# TODO: Checking if the answer was correct
+# To-do: Checking if the answer was correct
 
-# TODO: checking if we're the end of the quiz
+# To-do: checking if we're the end of the quiz
 
 # Create a method called still_has_questions
 
