@@ -36,4 +36,4 @@ class DataManager:
                 json=new_data,
                 auth=self.authorization,
             )
-            print(response.text)
+            response.raise_for_status()

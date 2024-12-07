@@ -1,12 +1,15 @@
 import os
 import requests
 from dotenv import load_dotenv
+from datetime import datetime, timedelta
 
 load_dotenv()
 
 IATA_ENDPOINT = \
     "https://test.api.amadeus.com/v1/reference-data/locations/cities"
 TOKEN_ENDPOINT = "https://test.api.amadeus.com/v1/security/oauth2/token"
+FLIGHT_SEARCH_ENDPOINT = \
+    "https://test.api.amadeus.com/v2/shopping/flight-offers"
 
 
 class FlightSearch:
@@ -19,7 +22,7 @@ class FlightSearch:
             "Authorization": f"Bearer {self._token}"
         }
 
-    def _get_new_token(self) -> str:
+    def _get_new_token(self):
         header = {
             "Content-Type": "application/x-www-form-urlencoded"
         }
@@ -32,12 +35,9 @@ class FlightSearch:
             url=TOKEN_ENDPOINT, headers=header, data=body
         )
         access_token = response.json()["access_token"]
-        token_expiration = response.json()["expires_in"]
-        # print(f"Your access token is {access_token}")
-        # print(f"Your access token expires in {token_expiration} seconds")
         return access_token
 
-    def get_destination_code(self, city_name: str) -> str:
+    def get_destination_code(self, city_name):
         """
         Retrieves the IATA code for a specified city using the Amadeus
         Location API
@@ -61,15 +61,50 @@ class FlightSearch:
             headers=self.bearer_header,
             params=search_params
         )
-        print(f"Status code {response.status_code}. Airport IATA: "
-              f"{response.text}")
         try:
             code = response.json()["data"][0]["iataCode"]
         except IndexError:
-            print(f"IndexError: No airport code found for {city_name}.")
             return "N/A"
         except KeyError:
-            print(f"KeyError: No airport code found for {city_name}.")
             return "Not Found"
         else:
             return code
+
+    def find_flights(self, origin_city_code, destination_city_code,
+                     from_time, to_time):
+        """
+        Searcher for flight options between two cities on specified
+        departure and return dates using the Amadeus API.
+
+        Parameters:
+            origin_city_code (str): The IATA code of the departure city.
+            destination_city_code (str): The IATA code of the destination city.
+            from_time (datetime): The departure date.
+            to_time (datetime): The return date.
+
+        Returns:
+            dict or None: A dictionary containing flight offer data if the
+            query is successful; None if there is an error.
+        """
+        search_params = {
+            "originLocationCode": origin_city_code,
+            "destinationLocationCode": destination_city_code,
+            "departureDate": from_time.strftime("%Y-%m-%d"),
+            "returnDate": to_time.strftime("%Y-%m-%d"),
+            "adults": 1,
+            "currencyCode": "GBP",
+            "nonStop": "true",
+        }
+
+        response = requests.get(
+            url=FLIGHT_SEARCH_ENDPOINT,
+            params=search_params,
+            headers=self.bearer_header
+        )
+        try:
+            flight_data = response.json()["data"]
+            print(response.status_code)
+        except KeyError:
+            return None
+        else:
+            return flight_data
