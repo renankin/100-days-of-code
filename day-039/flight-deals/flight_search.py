@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 from datetime import datetime, timedelta
 
 load_dotenv()
-
 IATA_ENDPOINT = \
     "https://test.api.amadeus.com/v1/reference-data/locations/cities"
 TOKEN_ENDPOINT = "https://test.api.amadeus.com/v1/security/oauth2/token"

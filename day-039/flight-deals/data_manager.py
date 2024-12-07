@@ -37,3 +37,17 @@ class DataManager:
                 auth=self.authorization,
             )
             response.raise_for_status()
+
+    def update_prices(self):
+        for price in self.destination_data:
+            new_data = {
+                "price": {
+                    "lowestPrice": price["lowestPrice"]
+                }
+            }
+            response = requests.put(
+                url=f"{SHEETY_PRICES_ENDPOINT}/{price["id"]}",
+                json=new_data,
+                auth=self.authorization,
+            )
+            response.raise_for_status()

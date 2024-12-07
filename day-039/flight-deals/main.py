@@ -1,6 +1,7 @@
 from flight_search import FlightSearch
 from data_manager import DataManager
 from flight_data import FlightData
+from notification_manager import NotificationManager
 import time
 from datetime import datetime, timedelta
 
@@ -35,3 +36,19 @@ for destination in sheet_data:
     flight_data.find_cheapest_flight()
     print(f"{city}: £{flight_data.price}")
     time.sleep(2)
+
+# ================== Send notification =================================
+    if flight_data.price != "N/A":
+        if destination["lowestPrice"] > flight_data.price:
+            formatted_msg = (
+                f"Low price alert! Only {flight_data.price} to fly from "
+                f"{flight_data.origin_airport} to "
+                f"{flight_data.destination_airport}, "
+                f"on {flight_data.out_date} to {flight_data.return_date}"
+            )
+            destination["lowestPrice"] = flight_data.price
+            notification_manager = NotificationManager()
+            notification_manager.send_message(formatted_msg)
+
+data_manager.destination_data = sheet_data
+data_manager.update_prices()
