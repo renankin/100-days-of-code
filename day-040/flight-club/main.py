@@ -16,12 +16,12 @@ for row in sheet_data:
         row["iataCode"] = flight_search.get_destination_code(row["city"])
         time.sleep(2)
 
-# data_manager.destination_data = sheet_data
-# data_manager.update_destination_codes()
+data_manager.destination_data = sheet_data
+data_manager.update_destination_codes()
 
 # ==================== Retrieve customer emails =====================
 customer_data = data_manager.get_customer_data()
-customer_email = [row["whatIsYourEmail?"] for row in customer_data]
+customer_emails = [row["whatIsYourEmailAddress?"] for row in customer_data]
 
 # ==================== Search for Cheapest Flights ========================
 tomorrow = (datetime.now() + timedelta(days=1))
@@ -68,5 +68,10 @@ for destination in sheet_data:
             notification_manager = NotificationManager()
             notification_manager.send_message(formatted_msg)
 
-# data_manager.destination_data = sheet_data
-# data_manager.update_prices()
+            notification_manager.send_emails(
+                email_list=customer_emails,
+                email_body=formatted_msg
+            )
+
+data_manager.destination_data = sheet_data
+data_manager.update_prices()
