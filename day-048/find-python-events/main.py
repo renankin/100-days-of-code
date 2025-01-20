@@ -8,10 +8,10 @@ chrome_options.add_experimental_option("detach", True)
 driver = webdriver.Chrome(options=chrome_options)
 driver.get("https://python.org")
 
-events_time = driver.find_elements(by=By.CSS_SELECTOR,
+events_time = driver.find_elements(By.CSS_SELECTOR,
                                    value=".event-widget time")
 
-events_name = driver.find_elements(by=By.CSS_SELECTOR,
+events_name = driver.find_elements(By.CSS_SELECTOR,
                                    value=".event-widget ul a")
 
 events = {
