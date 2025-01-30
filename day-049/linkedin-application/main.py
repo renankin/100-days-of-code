@@ -16,7 +16,7 @@ LINKEDIN_PASSWORD = os.environ.get("LINKEDIN_PASSWORD")
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_experimental_option("detach", True)
 
-# Start webdriver with Chrome and access Cookie website
+# Start webdriver with Chrome
 driver = webdriver.Chrome(options=chrome_options)
 driver.implicitly_wait(10)
 driver.get("https://www.linkedin.com/jobs/search/?currentJobId=4137431681"
