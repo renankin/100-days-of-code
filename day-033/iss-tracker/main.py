@@ -6,7 +6,7 @@ import os
 
 MY_LAT = 28.538336
 MY_LONG = -81.379234
-MY_EMAIL = "pythonisfun0@gmail.com"
+MY_EMAIL = os.environ.get("GMAIL_USERNAME")
 MY_PASSWORD = os.environ.get("GMAIL_PASSWORD")
 
 

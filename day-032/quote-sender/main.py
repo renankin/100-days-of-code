@@ -3,7 +3,7 @@ import random
 import datetime as dt
 import os
 
-MY_EMAIL = "pythonisfun0@gmail.com"
+MY_EMAIL = os.environ.get("GMAIL_USERNAME")
 MY_PASSWORD = os.environ.get("GMAIL_PASSWORD")
 
 now = dt.datetime.now()

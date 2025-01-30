@@ -4,7 +4,7 @@ from random import randint
 import smtplib
 import os
 
-MY_EMAIL = "pythonisfun0@gmail.com"
+MY_EMAIL = os.environ.get("GMAIL_USERNAME")
 MY_PASSWORD = os.environ.get("GMAIL_PASSWORD")
 
 now = datetime.now()

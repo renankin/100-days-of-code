@@ -1,15 +1,19 @@
 import requests
 from datetime import datetime
+from dotenv import load_dotenv
+import os
 
-USERNAME = "renankin"
-TOKEN = "aue84orjhf239ljjh"
+load_dotenv()
+
+USERNAME = os.environ.get("USERNAME")
+TOKEN = os.environ.get("TOKEN")
 GRAPH_ID = "graph1"
 
 pixela_endpoint = "https://pixe.la/v1/users"
 
 user_params = {
-    "token": "aue84orjhf239ljjh",
-    "username": "renankin",
+    "token": TOKEN,
+    "username": USERNAME,
     "agreeTermsOfService": "yes",
     "notMinor": "yes",
 }
