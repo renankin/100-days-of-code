@@ -58,9 +58,9 @@ def get_all_posts():
     return render_template("index.html", all_posts=posts)
 
 
-@app.route("/show")
-def show_post():
-    requested_post = db.get_or_404(BlogPost, request.args.get("post_id"))
+@app.route("/show/<int:post_id>")
+def show_post(post_id):
+    requested_post = db.get_or_404(BlogPost, post_id)
     return render_template("post.html", post=requested_post)
 
 
@@ -80,6 +80,26 @@ def new_post():
         db.session.commit()
         return redirect(url_for("get_all_posts"))
     return render_template("make-post.html", form=post_form)
+
+
+@app.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
+def edit_post(post_id):
+    post_to_update = db.get_or_404(BlogPost, post_id)
+    edit_form = PostForm(title=post_to_update.title,
+                         subtitle=post_to_update.subtitle,
+                         author=post_to_update.author,
+                         img_url=post_to_update.img_url,
+                         body=post_to_update.body)
+    if edit_form.validate_on_submit():
+        post_to_update.title = edit_form.title.data
+        post_to_update.subtitle = edit_form.subtitle.data
+        post_to_update.author = edit_form.author.data
+        post_to_update.img_url = edit_form.img_url.data
+        post_to_update.body = edit_form.body.data
+        db.session.commit()
+        return redirect(url_for("show_post", post_id=post_to_update.id))
+    return render_template("make-post.html", form=edit_form,
+                           post=post_to_update)
 
 
 @app.route("/about")
