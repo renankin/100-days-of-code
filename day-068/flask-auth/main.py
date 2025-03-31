@@ -40,12 +40,20 @@ def user_loader(user_id):
 
 @app.route('/')
 def home():
-    return render_template("index.html")
+    return render_template("index.html",
+                           logged_in=current_user.is_authenticated)
 
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
     if request.method == "POST":
+        user = db.session.execute(
+            db.select(User).where(User.email == request.form["email"])
+        ).scalar()
+        if user:
+            flash("Email already registered. Please log in instead.")
+            return redirect(url_for("login"))
+
         hash_and_salted_password = generate_password_hash(
             password=request.form["password"],
             method="pbkdf2:sha256",
@@ -58,28 +66,35 @@ def register():
         )
         db.session.add(new_user)
         db.session.commit()
-        return render_template("secrets.html", name=request.form["name"])
-    return render_template("register.html")
+        login_user(new_user)
+        return redirect(url_for("secrets"))
+    return render_template("register.html",
+                           logged_in=current_user.is_authenticated)
 
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        user = db.session.execute(db.select(User).where(
-            User.email == request.form["email"])).scalar()
-
-        if user is not None:
+        user = db.session.execute(
+            db.select(User).where(User.email == request.form["email"])
+        ).scalar()
+        if user:
             if check_password_hash(user.password, request.form["password"]):
                 login_user(user)
                 return redirect(url_for("secrets"))
-
-    return render_template("login.html")
+            flash("Invalid password. Please try again.")
+            return redirect(url_for("login"))
+        flash("Email does not exist. Please try again.")
+        return redirect(url_for("login"))
+    return render_template("login.html",
+                           logged_in=current_user.is_authenticated)
 
 
 @app.route('/secrets')
 @login_required
 def secrets():
-    return render_template("secrets.html", name=current_user.name)
+    return render_template("secrets.html", name=current_user.name,
+                           logged_in=True)
 
 
 @app.route('/logout')
