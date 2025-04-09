@@ -1,3 +1,5 @@
 .DS_Store
 **/.env
 **/.cache
+**/*.db
+**/__pycache__
